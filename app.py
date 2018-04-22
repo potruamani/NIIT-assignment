@@ -140,11 +140,14 @@ def get_the_dates(date_ranges):
 	file_name_2 = download_file("http://www.bcb.gov.br/pec/Indeco/Ingl/ie5-26i.xlsx")
 	result_1 = []
 	result_2 = []
+	key_to_sort = csv_1_header[1:]
 
 	for i in range(delta.days + 1):
 		date = (start_date + timedelta(days=i)).strftime("%m/%d/%Y")
 		data = transformation_of_time_series_type_1(date,file_name_1)
-		result_1.append([date]+data.values())
+		values_to_insert_ = sorted(data.items(),key=lambda x: key_to_sort.index(x[0]))
+		values_to_insert = [i[1] for i in values_to_insert_]
+		result_1.append([date]+values_to_insert)
 	create_csv_file_type_1(result_1)
 	print 'type 1 file csv has been generted'
 
@@ -158,6 +161,6 @@ def get_the_dates(date_ranges):
 
 if __name__ == '__main__':
 	# type 1 ideal run
-	get_the_dates('12/1/2017')
+	# get_the_dates('12/1/2017')
 	# type 2 ideal run
-	# get_the_dates('3/26/2018-3/28/2018')
+	get_the_dates('3/26/2018-3/28/2018')
